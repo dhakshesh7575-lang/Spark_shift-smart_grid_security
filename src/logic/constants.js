@@ -9,6 +9,13 @@
 // maps cleanly onto real firmware/database tables.
 // ---------------------------------------------------------------------------
 
+// The authoritative TNEB transformer registry now lives in the data layer.
+// Re-exported here so existing consumers (verification.js, wifiTrace.js,
+// ThiefPanel.jsx) keep importing `TRANSFORMERS` from './constants' unchanged.
+import { TN_TRANSFORMERS, TN_LOCATIONS, TN_DISTRICTS } from '../data/tnebTransformers';
+
+export { TN_TRANSFORMERS, TN_LOCATIONS, TN_DISTRICTS };
+
 /**
  * Distribution transformers known to the Admin Server.
  *
@@ -16,11 +23,7 @@
  * transformer it is wired under.  On real hardware this is usually burned into
  * the transformer chip's flash at commissioning time.
  */
-export const TRANSFORMERS = [
-  { id: 'TRF-A', prefix: 'TRF-A', label: 'Transformer A — Ward 1', capacityKva: 250 },
-  { id: 'TRF-B', prefix: 'TRF-B', label: 'Transformer B — Ward 2', capacityKva: 400 },
-  { id: 'TRF-C', prefix: 'TRF-C', label: 'Transformer C — Ward 3', capacityKva: 315 },
-];
+export const TRANSFORMERS = TN_TRANSFORMERS;
 
 /**
  * Registry of authorised meters (would be the `meters` table on the server).
