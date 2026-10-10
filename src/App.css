@@ -46,15 +46,71 @@ body {
 
 /* ----------------------------- App shell ------------------------------- */
 
+/* --------------------------- App shell + sidebar ----------------------- */
+
+/* Horizontal shell: sidebar rail on the left, existing layout on the right. */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
 .app {
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
   height: 100vh;
-  width: 100%;
   background:
     radial-gradient(1200px 600px at 50% -10%, rgba(58, 160, 255, 0.08), transparent 60%),
     var(--bg);
+}
+
+/* Left sidebar: always-visible slim rail + optional drawer. */
+.sidebar {
+  flex: 0 0 auto;
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(180deg, #070c16, #0a0f1a);
+  border-right: 1px solid var(--border);
+  z-index: 5;
+}
+
+.sidebar-rail {
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  flex: 0 0 auto;
+}
+
+.rail-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.rail-btn:hover {
+  color: #eaf2ff;
+  background: rgba(58, 160, 255, 0.1);
+}
+
+.rail-btn.is-active {
+  color: var(--blue);
+  background: rgba(58, 160, 255, 0.14);
+  border-color: var(--border-bright);
+  box-shadow: 0 0 12px rgba(58, 160, 255, 0.25);
 }
 
 .top-half {

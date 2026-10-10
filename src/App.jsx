@@ -18,6 +18,7 @@ import { useCallback, useRef, useState } from 'react';
 import AdminServer from './components/AdminServer';
 import AuthorisedMeter from './components/AuthorisedMeter';
 import ThiefPanel from './components/ThiefPanel';
+import Sidebar from './components/sidebar/Sidebar';
 import { verifyCode } from './logic/verification';
 import { generateWifiTrace } from './logic/wifiTrace';
 import { AUTHORISED_METER } from './logic/constants';
@@ -120,22 +121,27 @@ export default function App() {
   }, [lastTheft, pushLog, showToast]);
 
   return (
-    <div className="app">
-      {/* ---------------- TOP HALF: Admin Server ---------------- */}
-      <AdminServer
-        logs={logs}
-        lastTheft={lastTheft}
-        onShareLocation={handleShareLocation}
-      />
+    <div className="app-shell">
+      {/* ---------------- LEFT SIDEBAR (narrows the layout only) ---------------- */}
+      <Sidebar />
 
-      {/* ---------------- BOTTOM HALF: Meter + Thief ---------------- */}
-      <div className="bottom-half">
-        <AuthorisedMeter meter={AUTHORISED_METER} onVerify={handleAuthorisedVerify} />
-        <ThiefPanel onTheftAttempt={handleThiefAttempt} />
+      <div className="app">
+        {/* ---------------- TOP HALF: Admin Server ---------------- */}
+        <AdminServer
+          logs={logs}
+          lastTheft={lastTheft}
+          onShareLocation={handleShareLocation}
+        />
+
+        {/* ---------------- BOTTOM HALF: Meter + Thief ---------------- */}
+        <div className="bottom-half">
+          <AuthorisedMeter meter={AUTHORISED_METER} onVerify={handleAuthorisedVerify} />
+          <ThiefPanel onTheftAttempt={handleThiefAttempt} />
+        </div>
+
+        {/* ---------------- Toast notification ---------------- */}
+        {toast && <div className="toast">{toast}</div>}
       </div>
-
-      {/* ---------------- Toast notification ---------------- */}
-      {toast && <div className="toast">{toast}</div>}
     </div>
   );
 }
