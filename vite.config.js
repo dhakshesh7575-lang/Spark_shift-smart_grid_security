@@ -9,4 +9,11 @@ export default defineConfig({
     // Open the browser automatically when `npm run dev` starts.
     open: true,
   },
+  // Vitest configuration (unit + component tests).
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.js',
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
+  },
 });
