@@ -16,7 +16,7 @@ export default function StatusFilter({ value = 'all', onChange }) {
         <button
           key={opt.value}
           type="button"
-          className={`status-toggle${value === opt.value ? ' is-active' : ''}`}
+          className={`status-toggle status-toggle--${opt.value}${value === opt.value ? ' is-active' : ''}`}
           aria-pressed={value === opt.value}
           onClick={() => onChange(opt.value)}
         >
