@@ -86,6 +86,13 @@ export default function ThiefPanel({ onTheftAttempt }) {
           </div>
         </div>
 
+        {theftDetected && (
+          <div className="breaker-note">
+            AUTOMATIC REMOTE CONTROLLED LT BREAKER IN TRANSFORMER STOPPED THE
+            UNAUTHORISED FLOW OF ELECTRICITY
+          </div>
+        )}
+
         <button className="verify-btn" onClick={handleVerify}>
           ⚡ VERIFY (FAKE CODE)
         </button>

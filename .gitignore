@@ -12,3 +12,14 @@ dist-ssr/
 .DS_Store
 *.log
 npm-debug.log*
+
+# Secrets / local environment — never commit real credentials or numbers
+.env
+.env.*
+!.env.example
+
+# Scratch/temp file (not part of the project)
+temp_trigger.txt
+
+# SMS backend runtime persistence (simple JSON store)
+server/data/

@@ -8,8 +8,9 @@
 // state is untouched.
 
 import { useState } from 'react';
-import { TransformerIcon } from './SidebarIcon';
+import { MapIcon, TransformerIcon } from './SidebarIcon';
 import TransformersPanel from './TransformersPanel';
+import TransformerMapPanel from './TransformerMapPanel';
 
 export default function Sidebar() {
   // Which section is open in the drawer (null = collapsed, rail only).
@@ -31,11 +32,28 @@ export default function Sidebar() {
         >
           <TransformerIcon />
         </button>
+
+        <button
+          type="button"
+          className={`rail-btn${activeSection === 'transformerMap' ? ' is-active' : ''}`}
+          aria-label="Transformer Map"
+          title="Transformer Map"
+          aria-pressed={activeSection === 'transformerMap'}
+          onClick={() => toggle('transformerMap')}
+        >
+          <MapIcon />
+        </button>
       </nav>
 
       {activeSection === 'transformers' && (
         <section className="sidebar-drawer" aria-label="Transformers">
           <TransformersPanel onClose={() => setActiveSection(null)} />
+        </section>
+      )}
+
+      {activeSection === 'transformerMap' && (
+        <section className="sidebar-drawer" aria-label="Transformer Map">
+          <TransformerMapPanel onClose={() => setActiveSection(null)} />
         </section>
       )}
     </aside>

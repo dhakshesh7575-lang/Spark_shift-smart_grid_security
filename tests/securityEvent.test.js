@@ -23,6 +23,38 @@ describe('SecurityEvent model', () => {
   });
 });
 
+describe('SecurityEvent GSM fallback fields (lac / cell_id)', () => {
+  it('defaults lac and cell_id to null when omitted', () => {
+    const ev = createSecurityEvent({ eventType: 'ACCESS_REJECTION' });
+    expect(ev.lac).toBeNull();
+    expect(ev.cell_id).toBeNull();
+  });
+
+  it('accepts lac and cell_id values (number or string)', () => {
+    const ev = createSecurityEvent({ lac: 4057, cell_id: '123456' });
+    expect(ev.lac).toBe(4057);
+    expect(ev.cell_id).toBe('123456');
+  });
+
+  it('rejects empty / blank strings by converting them to null', () => {
+    const ev = createSecurityEvent({ lac: '', cell_id: '   ' });
+    expect(ev.lac).toBeNull();
+    expect(ev.cell_id).toBeNull();
+  });
+
+  it('trims surrounding whitespace from string values', () => {
+    const ev = createSecurityEvent({ lac: '  4057 ', cell_id: ' 123456 ' });
+    expect(ev.lac).toBe('4057');
+    expect(ev.cell_id).toBe('123456');
+  });
+
+  it('never emits undefined for lac / cell_id', () => {
+    const ev = createSecurityEvent({ lac: undefined, cell_id: undefined });
+    expect(ev.lac).not.toBeUndefined();
+    expect(ev.cell_id).not.toBeUndefined();
+  });
+});
+
 describe('Admin config validation', () => {
   it('validates E.164 format', () => {
     expect(isE164('+919080337074')).toBe(true);

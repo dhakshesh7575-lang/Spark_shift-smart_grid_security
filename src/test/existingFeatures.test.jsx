@@ -22,6 +22,18 @@ describe('existing simulation features', () => {
     expect(screen.getByText('00:00:30')).toBeInTheDocument();
   });
 
+  it('shows the LT breaker cutoff message ONLY after a failed verification', () => {
+    render(<App />);
+    const msg = /LT BREAKER IN TRANSFORMER STOPPED THE UNAUTHORISED FLOW OF ELECTRICITY/i;
+
+    // Hidden before any verification attempt.
+    expect(screen.queryByText(msg)).not.toBeInTheDocument();
+
+    // Shown once the thief VERIFY fails.
+    fireEvent.click(screen.getByRole('button', { name: /verify/i }));
+    expect(screen.getByText(msg)).toBeInTheDocument();
+  });
+
   it('thief VERIFY always fails and reveals a trace + enables SHARE LOCATION', () => {
     render(<App />);
 

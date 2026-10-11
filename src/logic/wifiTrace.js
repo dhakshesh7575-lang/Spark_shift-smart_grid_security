@@ -73,6 +73,7 @@ export function generateGeo() {
  *        the theft to a real distribution point.
  * @returns {{
  *   ssid: string, bssid: string, localIp: string, publicIp: string,
+ *   lac: number|null, cell_id: string|number|null,
  *   lat: number, lng: number, city: string, country: string,
  *   transformerId: string, transformerLabel: string, timestamp: string
  * }}
@@ -87,6 +88,11 @@ export function generateWifiTrace(transformerId) {
     bssid: generateBSSID(),
     localIp: generateLocalIP(),
     publicIp: generatePublicIP(),
+    // GSM fallback identity. This client-side simulator always reports Wi-Fi,
+    // so the fields are null here; they render as "Unavailable" and exist so
+    // the network display can show them when a device is offline.
+    lac: null,
+    cell_id: null,
     lat: geo.lat,
     lng: geo.lng,
     city: geo.city,

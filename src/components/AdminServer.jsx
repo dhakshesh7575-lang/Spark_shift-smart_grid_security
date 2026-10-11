@@ -9,14 +9,29 @@
 //     Wi-Fi trace (SSID, BSSID/MAC, local + public IP, geolocation,
 //     transformer id, timestamp).
 //   * Provide the "SHARE LOCATION" button (enabled once a theft exists).
+//   * Show the EB-Admin SMS alert console (simulation by default).
 //
 // Real-world analogue: the central cloud/Admin server application + database.
 // ---------------------------------------------------------------------------
 
 import { useEffect, useRef } from 'react';
 import LogLine from './LogLine';
+import SmsAlertsPanel from './SmsAlertsPanel';
+import { resolveNetworkDisplay } from '../logic/networkDisplay';
 
-export default function AdminServer({ logs, lastTheft, onShareLocation }) {
+export default function AdminServer({
+  logs,
+  lastTheft,
+  onShareLocation,
+  alerts = [],
+  alertMode,
+  adminNumber,
+  canSync = false,
+  syncing = false,
+  onTestAlert,
+  onClearAlerts,
+  onSyncAlerts,
+}) {
   // Ref to the scrollable log container so we can auto-scroll to the newest
   // line whenever the log array grows.
   const logBoxRef = useRef(null);
@@ -25,6 +40,9 @@ export default function AdminServer({ logs, lastTheft, onShareLocation }) {
     const el = logBoxRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [logs]);
+
+  // Network identity for the captured trace (Wi-Fi SSID OR GSM LAC/Cell ID).
+  const net = lastTheft ? resolveNetworkDisplay(lastTheft) : null;
 
   return (
     <section className="panel top-half admin-server">
@@ -54,7 +72,9 @@ export default function AdminServer({ logs, lastTheft, onShareLocation }) {
 
           {lastTheft ? (
             <div className="trace-card">
-              <TraceRow label="WiFi SSID" value={lastTheft.ssid} />
+              <TraceRow label="WiFi SSID" value={net.ssid} />
+              <TraceRow label="LAC" value={net.lac} />
+              <TraceRow label="Cell ID" value={net.cellId} />
               <TraceRow label="BSSID / MAC" value={lastTheft.bssid} />
               <TraceRow label="Local IP" value={lastTheft.localIp} />
               <TraceRow label="Public IP" value={lastTheft.publicIp} />
@@ -90,6 +110,18 @@ export default function AdminServer({ logs, lastTheft, onShareLocation }) {
             📡 SHARE LOCATION
           </button>
         </div>
+
+        {/* ---------------- Right-most: EB admin SMS alerts ---------------- */}
+        <SmsAlertsPanel
+          alerts={alerts}
+          mode={alertMode}
+          adminNumber={adminNumber}
+          canSync={canSync}
+          syncing={syncing}
+          onTestAlert={onTestAlert}
+          onClearAlerts={onClearAlerts}
+          onSyncAlerts={onSyncAlerts}
+        />
       </div>
     </section>
   );
